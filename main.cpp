@@ -758,16 +758,16 @@ int mainDemo() {
 int mainSw() {
     int a = 100;
     int b = 200;
-    swap(a,b);
+    swap(a, b);
     ::system("pause");
     return 0;
 }
 
 //指针相关
 
-int mainPointer(){
+int mainPointer() {
     int a = 10;
-    int * p;
+    int *p;
     p = &a;//指向a的地址
     cout << &a << endl; //打印数据a的地址
     cout << p << endl;  //打印指针变量p
@@ -781,3 +781,177 @@ int mainPointer(){
 //总结1： 我们可以通过 & 符号 获取变量的地址
 //总结2：利用指针可以记录地址
 //总结3：对指针变量解引用，可以操作指针指向的内存
+
+
+int mainInterspace() {
+    int a = 10;
+    int *p;
+    p = &a; //指针指向数据a的地址
+    cout << *p << endl; //* 解引用
+//    占用内存空间
+    cout << sizeof(p) << endl;
+    cout << sizeof(char *) << endl;
+    cout << sizeof(float *) << endl;
+    cout << sizeof(double *) << endl;
+    system("pause");
+    return 0;
+}
+
+int mainNullPointer() {
+
+    //指针变量p指向内存地址编号为0的空间
+    int *p = NULL;
+
+    //访问空指针报错
+    //内存编号0 ~255为系统占用内存，不允许用户访问
+    cout << *p << endl;
+
+    system("pause");
+
+    return 0;
+}
+
+//野指针：指针变量指向非法的内存空间
+int main_i() {
+
+    //指针变量p指向内存地址编号为0x1100的空间
+    int *p = (int *) 0x1100;
+
+    //访问野指针报错
+    cout << *p << endl;
+
+    system("pause");
+
+    return 0;
+}
+
+
+//const修饰指针 --- 常量指针
+//const修饰常量 --- 指针常量
+//const即修饰指针，又修饰常量
+
+int main_const() {
+    int a = 10;
+    int b = 10;
+    //const修饰的是指针，指针指向可以改，指针指向的值不可以更改
+    const int *p1 = &a;
+    p1 = &b; //正确
+    //*p1 = 100;  报错
+    //const修饰的是常量，指针指向不可以改，指针指向的值可以更改
+    int *const p2 = &a;
+    //p2 = &b; //错误
+    *p2 = 100; //正确
+    //const既修饰指针又修饰常量
+    const int *const p3 = &a;
+    //p3 = &b; //错误
+    //*p3 = 100; //错误
+    ::system("pause");
+    return 0;
+}
+//技巧：看const右侧紧跟着的是指针还是常量, 是指针就是常量指针，是常量就是指针常量
+
+int mainListPoint() {
+    int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int *p = arr; //指向数组
+    cout << "第一个元素:" << arr[0] << endl;
+    cout << "指针访问第一个元素：" << *p << endl;
+    for (int i = 0; i < 10; i++) {
+        //利用指针遍历数组
+        cout << *p << endl;
+        p++;
+    }
+    ::system("pause");
+    return 0;
+}
+
+//值传递
+void swap1(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+//地址传递
+void swap2(int *p1, int *p2) {
+    int temp = *p1;
+    *p1 = *p2;
+    *p2 = temp;
+}
+
+int mainsw() {
+    int a = 10;
+    int b = 20;
+    swap1(a, b);
+    // 值传递不会改变实参
+    cout << "a=" << a << endl;
+    cout << "b=" << b << endl;
+    swap2(&a, &b);
+    //地址传递会改变实参
+    cout << "a=" << a << endl;
+    cout << "b=" << b << endl;
+    system("pause");
+    return 0;
+}
+
+//冒泡
+void bubbleSort(int *arr, int len)  //int * arr 也可以写为int arr[]
+{
+    for (int i = 0; i < len - 1; i++) {
+        for (int j = 0; j < len - 1 - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void printArray(int arr[], int len) {
+    for (int i = 0; i < len; i++) {
+        cout << arr[i] << endl;
+    }
+}
+
+int mainBubbleSort_() {
+
+    int arr[10] = {4, 3, 6, 9, 1, 2, 10, 8, 7, 5};
+    int len = sizeof(arr) / sizeof(int);
+
+    bubbleSort(arr, len);
+
+    printArray(arr, len);
+
+    system("pause");
+
+    return 0;
+}
+
+//结构体定义
+//struct 结构体名 变量名
+//struct 结构体名 变量名 = { 成员1值 ， 成员2值...}
+//定义结构体时顺便创建变量
+struct student {
+    string name;//姓名
+    int age;
+    int score;
+} stu3;
+
+int main() {
+    //struct 结构体名 变量名
+    struct student stu1;
+    stu1.name = "张三";
+    stu1.age = 18;
+    stu1.score = 100;
+    cout << "姓名" << stu1.name << "年龄" << stu1.age << "分数" << stu1.score << endl;
+    //struct 结构体名 变量名 = { 成员1值 ， 成员2值...}
+    struct student stu2 = {"李四", 19, 60};
+    cout << "姓名" << stu2.name << "年龄" << stu2.age << "分数" << stu2.score << endl;
+    stu3.name = "王五";
+    stu3.age = 18;
+    stu3.score = 80;
+    cout << "姓名" << stu3.name << "年龄" << stu3.age << "分数" << stu3.score << endl;
+    system("pause");
+    return 0;
+
+}
